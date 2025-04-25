@@ -1,1 +1,2 @@
-print(5*4)
+result = 5 + 2
+print(result)
