@@ -4,17 +4,8 @@ DownloadedSongs/
 # Ignore Recently_Played.txt file (because it will keep changing)
 recentlyPlayed.txt
 
-# Ignore default photo file (only if you don't want to track it)
+# Ignore default photo file
 defaultphoto.png
 
-# Ignore Python bytecode files (optional, to avoid cluttering repo)
-*.pyc
-__pycache__/
-
-# Ignore IDE files (optional, if you're using an IDE like VSCode or PyCharm)
-.vscode/
-.idea/
-
-# Ignore environment files (optional, if you use virtual environments)
-venv/
-.env/
+# Ignore default profile file 
+default_profile.png
