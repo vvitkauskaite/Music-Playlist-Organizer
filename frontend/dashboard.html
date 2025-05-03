@@ -18,6 +18,7 @@
     <div class="sidebar-left sidebar">
       <h2 class="toggle-header">📂 Playlists</h2>
       <ul id="playlist-list"></ul>
+      <button class="delete-account-button" onclick="openDeleteModal()">Delete Account</button>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -38,8 +39,6 @@
         <button onclick="clearHistory()">Clear</button>
         <pre id="history-output"></pre>
       </div>
-
-      <button id="delete-btn" onclick="openDeleteModal()">Delete Account</button>
     </div>
 
     <!-- RIGHT SIDEBAR: Library & Public Songs -->
@@ -52,7 +51,6 @@
       <input type="text" id="public-search" placeholder="Search public songs">
       <ul id="public-song-list"></ul>
     </div>
-
   </div>
 
   <!-- Music Player -->
@@ -65,9 +63,9 @@
     <input type="range" id="volume-slider" min="0" max="100" value="50" />
   </div>
 
-  <!-- Delete Modal -->
+  <!-- Delete Confirmation Modal -->
   <div id="delete-modal" class="modal" style="display:none;">
-    <div class="modal-content" style="margin: auto; top: 50%; transform: translateY(-50%); position: relative; background: white; padding: 20px; border-radius: 10px;">
+    <div class="modal-content delete-confirmation">
       <p>Are you sure you want to delete your account?</p>
       <button onclick="confirmDelete()">Yes</button>
       <button onclick="closeDeleteModal()">No</button>
@@ -81,14 +79,20 @@
       <div class="playlist-details">
         <div class="playlist-text">
           <h2 id="popup-title" class="editable" contenteditable="true" spellcheck="false">Untitled</h2>
-          <p id="popup-description" class="editable placeholder" contenteditable="true" spellcheck="false">add description</p>
+          <p id="popup-description" class="editable placeholder" contenteditable="true" spellcheck="false"
+             onfocus="if(this.innerText.trim() === 'add description'){ this.innerText = ''; this.classList.remove('placeholder'); }"
+             onblur="if(this.innerText.trim() === ''){ this.innerText = 'add description'; this.classList.add('placeholder'); }">
+            add description
+          </p>
         </div>
         <div style="background: white; padding: 4px; border-radius: 10px;">
           <img id="playlist-img" class="popup-img" src="/static/default_picture.png" alt="playlist image" style="object-fit: cover;">
         </div>
       </div>
 
-      <input type="text" id="playlist-song-search" placeholder="Search all songs..." style="margin-bottom: 0;">
+      <!-- Playlist Searchbar -->
+      <input type="text" id="playlist-song-search" placeholder="Search all songs..." style="background-color:white; border:none; outline:none; border-radius:8px; padding:10px; width:80%; margin-bottom:10px;">
+
       <ul id="popup-song-search-results" style="margin-top: 10px;"></ul>
 
       <div>

@@ -10,20 +10,23 @@ body {
     flex-direction: column;
     overflow: hidden;
 }
-
-/* Decorative wave image for register */
-.register-wave {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin-bottom: -5px;
+.register-message {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertical center */
+    align-items: center;     /* Horizontal center */
+    text-align: center;
+    color: #333;
 }
 
-/* Center text for register page */
-.register-text {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+.register-message h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.register-message p {
+    font-size: 1.2rem;
 }
 
 /* Layout containers */
@@ -94,7 +97,7 @@ h1 {
 form {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -126,7 +129,7 @@ button:hover {
 /* Song list */
 #song-list li,
 #public-song-list li {
-    background-color: #e8f0fe;
+    background-color: #6699CC;
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 8px;
@@ -136,6 +139,7 @@ button:hover {
     align-items: center;
     font-size: 0.95rem;
     overflow: hidden;
+    color: white;
 }
 
 #song-list li span,
@@ -149,15 +153,15 @@ button:hover {
 
 /* Small uniform play button */
 .play-button {
-    font-size: 0.75rem;
-    padding: 4px 6px;
-    border-radius: 5px;
+    font-size: 0.5rem;
+    padding: 2px 4px;
+    border-radius: 4px;
     background-color: #5b7cfa;
     color: white;
     border: none;
     cursor: pointer;
     flex-shrink: 0;
-    min-width: 30px;
+    min-width: 22px;
     text-align: center;
 }
 
@@ -229,52 +233,39 @@ button:hover {
     margin-top: 1rem;
     width: 100%;
     max-width: 600px;
+    box-sizing: border-box;
 }
 
-/* Delete button */
-#delete-btn {
-    background-color: #e74c3c;
-    margin-top: 50px;
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    text-align: center;
-    display: block;
-    color: white;
-    align-self: center;
-    margin-bottom: 1rem;
-}
-
-#delete-btn:hover {
-    background-color: #c0392b;
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    align-items: center;
-    justify-content: center;
-}
-
+/* Modal Playlist Popup */
 .modal-content.playlist-popup-content {
     background-color: #ADD8E6;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: flex-start;
+    align-items: center;
     padding: 2rem;
-    max-width: 700px;
-    width: 90%;
+    width: 600px;
     text-align: left;
-    position: relative;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+#playlist-song-search {
+    padding: 10px;
+    border-radius: 8px;
+    width: 80%;
+    margin-bottom: 10px;
+    align-self: center;
+    background-color: white;
+    color: #000;
+    outline: none;
+    box-shadow: none;
+    border: none;
 }
 
 .playlist-details {
@@ -319,19 +310,10 @@ button:hover {
     cursor: pointer;
 }
 
-#playlist-song-search {
-    padding: 10px;
-    border-radius: 8px;
-    width: 80%;
-    border: 1px solid #ccc;
-    margin-bottom: 0;
-    align-self: center;
-}
-
 #popup-song-search-results,
 #popup-song-list {
-    background-color: #fff;
-    padding: 1rem;
+    background-color: #116e8c;
+    padding: 0.5rem;
     border-radius: 10px;
     max-height: 200px;
     overflow-y: auto;
@@ -339,6 +321,7 @@ button:hover {
     list-style-type: none;
     margin-left: 0;
     border: none;
+    color: white;
 }
 
 #popup-song-search-results li,
@@ -348,6 +331,8 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     font-size: 0.95rem;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
 }
 
 #close-popup {
@@ -357,6 +342,42 @@ button:hover {
     font-size: 1.5rem;
     cursor: pointer;
     z-index: 10;
+}
+
+/* Delete account button */
+.delete-account-button {
+    background-color: #FF2400;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+}
+
+.delete-account-button:hover {
+    background-color: #cc1f00;
+}
+
+/* Delete confirmation modal */
+.modal-content.delete-confirmation {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 /* Wave line */
