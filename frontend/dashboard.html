@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TuneTide</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <div class="wave light-blue"></div>
+  <h1>🎧 TuneTide</h1>
+
+  <div class="app-container">
+
+    <!-- LEFT SIDEBAR: Playlists -->
+    <div class="sidebar-left sidebar">
+      <h2 class="toggle-header">📂 Playlists</h2>
+      <ul id="playlist-list"></ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <form id="create-playlist-form">
+        <input type="text" id="playlist-name" placeholder="Playlist name" required>
+        <button type="submit">Create Playlist</button>
+      </form>
+
+      <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" id="upload-song" name="file" accept=".mp3" required>
+        <button type="submit">Upload MP3</button>
+      </form>
+
+      <div class="section">
+        <h2 class="toggle-header">📝 Recently Played</h2>
+        <button onclick="fetchHistory()">View</button>
+        <button onclick="clearHistory()">Clear</button>
+        <pre id="history-output"></pre>
+      </div>
+
+      <button id="delete-btn" onclick="openDeleteModal()">Delete Account</button>
+    </div>
+
+    <!-- RIGHT SIDEBAR: Library & Public Songs -->
+    <div class="sidebar-right sidebar">
+      <h2>🎵 Library</h2>
+      <input type="text" id="song-filter" placeholder="Search your uploaded songs">
+      <ul id="song-list"></ul>
+
+      <h2>🌍 Public Songs</h2>
+      <input type="text" id="public-search" placeholder="Search public songs">
+      <ul id="public-song-list"></ul>
+    </div>
+
+  </div>
+
+  <!-- Music Player -->
+  <div id="music-player">
+    <span id="current-song"></span>
+    <input type="range" id="progress-bar" min="0" value="0">
+    <button id="play-pause-btn">▶️ Play</button>
+    <button id="loop-btn">🔁 Loop</button>
+    <span id="volume-label">🔊 50</span>
+    <input type="range" id="volume-slider" min="0" max="100" value="50" />
+  </div>
+
+  <!-- Delete Modal -->
+  <div id="delete-modal" class="modal" style="display:none;">
+    <div class="modal-content" style="margin: auto; top: 50%; transform: translateY(-50%); position: relative; background: white; padding: 20px; border-radius: 10px;">
+      <p>Are you sure you want to delete your account?</p>
+      <button onclick="confirmDelete()">Yes</button>
+      <button onclick="closeDeleteModal()">No</button>
+    </div>
+  </div>
+
+  <!-- Playlist Popup -->
+  <div id="playlist-popup" class="modal" style="display:none;">
+    <div class="modal-content playlist-popup-content">
+      <span id="close-popup">❌</span>
+      <div class="playlist-details">
+        <div class="playlist-text">
+          <h2 id="popup-title" class="editable" contenteditable="true" spellcheck="false">Untitled</h2>
+          <p id="popup-description" class="editable placeholder" contenteditable="true" spellcheck="false">add description</p>
+        </div>
+        <div style="background: white; padding: 4px; border-radius: 10px;">
+          <img id="playlist-img" class="popup-img" src="/static/default_picture.png" alt="playlist image" style="object-fit: cover;">
+        </div>
+      </div>
+
+      <input type="text" id="playlist-song-search" placeholder="Search all songs..." style="margin-bottom: 0;">
+      <ul id="popup-song-search-results" style="margin-top: 10px;"></ul>
+
+      <div>
+        <h3 style="margin-top: 1rem;">Songs in Playlist:</h3>
+        <ul id="popup-song-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>
