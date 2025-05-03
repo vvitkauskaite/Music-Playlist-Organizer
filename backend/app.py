@@ -1,5 +1,3 @@
-# Final TuneTide Backend: Fully working with public songs, playlists, player, and OOP principles
-
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory, session
 import datetime
 import os
@@ -116,24 +114,30 @@ class User:
 
 # --- History Logger ---
 class HistoryLogger:
-    file_path = "Recently_Played.txt"
+    file_path = os.path.join(os.getcwd(), "Recently_Played.txt")
 
     @staticmethod
     def log_song(user_name: str, song: Song):
-        with open(HistoryLogger.file_path, 'a') as file:
-            file.write(f"{user_name},{song.s_name},{datetime.date.today()}\n")
+        try:
+            print(f"[DEBUG] Logging: {user_name} - {song.s_name}")
+            with open(HistoryLogger.file_path, 'a', encoding='utf-8') as file:
+                file.write(f"{user_name},{song.s_name},{datetime.date.today()}\n")
+        except Exception as e:
+            print(f"[ERROR] Failed to log song: {e}")
 
     @staticmethod
     def read_history():
         try:
-            with open(HistoryLogger.file_path, 'r') as file:
+            with open(HistoryLogger.file_path, 'r', encoding='utf-8') as file:
                 return file.readlines()
         except FileNotFoundError:
             return ["No history found."]
 
     @staticmethod
     def clear_history():
-        open(HistoryLogger.file_path, 'w').close()
+        with open(HistoryLogger.file_path, 'w', encoding='utf-8') as file:
+            file.write('')
+
 
 # --- Singleton Music Player ---
 class MusicPlayer(metaclass=SingletonMP):
@@ -260,7 +264,7 @@ def add_to_playlist():
     user = users_db.get(username)
     data = request.get_json()
     pl_name = data['playlist'].strip().lower()
-    song_name = data['song']
+    song_name = os.path.splitext(data['song'])[0]
     is_public = data.get('is_public', False)
     song = PublicSong(song_name, "Various", 3.0) if is_public else LocalSong(song_name, "Unknown Artist", 3.0)
     for pl in user.playlists:
@@ -268,6 +272,29 @@ def add_to_playlist():
             pl.add_song(song)
             return jsonify(message="Added to playlist"), 200
     return jsonify(message="Playlist not found"), 404
+
+@app.route('/playlist/remove_song', methods=['POST'])
+def remove_from_playlist():
+    username = session.get('username')
+    user = users_db.get(username)
+    data = request.get_json()
+
+    pl_name = data.get('playlist', '').strip().lower()
+    song_name = data.get('song')
+    is_public = data.get('is_public', False)
+
+    if not song_name:
+        return jsonify(message="Missing song filename"), 400
+
+    for pl in user.playlists:
+        if pl.p_name.strip().lower() == pl_name:
+            for i, song in enumerate(pl.songs):
+                # Match full filename
+                if song.s_name == os.path.splitext(song_name)[0]:
+                    pl.remove_song(i)
+                    return jsonify(message="Song removed from playlist"), 200
+
+    return jsonify(message="Playlist or song not found"), 404
 
 @app.route('/playlist/update_title', methods=['POST'])
 def update_title():

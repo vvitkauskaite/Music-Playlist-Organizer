@@ -7,6 +7,7 @@ $(document).ready(function () {
   loadSongs();
   loadPublicSongs();
   loadPlaylists();
+  fetchHistory(); // Load history on page load
 
   $("#upload-form").submit(function (e) {
     e.preventDefault();
@@ -47,28 +48,86 @@ $(document).ready(function () {
     });
   });
 
-  function playSong(src, title, isPublic) {
-    if (currentAudio) {
-      currentAudio.pause();
-      if (currentSongTitle === title) {
-        currentSongTitle = "";
-        $("#play-pause-btn").text("▶️ Play");
-        return;
+  function fetchHistory() {
+    $.ajax({
+      url: "/history",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        if (data && data.history && data.history.length > 0) {
+          $("#history-output").html(data.history[0]);
+        } else {
+          $("#history-output").html("<i>No history available</i>");
+        }
+      },
+      error: function () {
+        $("#history-output").html("<i>Failed to load history</i>");
       }
-    }
-    currentAudio = new Audio(src);
-    currentAudio.volume = $("#volume-slider").val() / 100;
-    currentAudio.loop = false;
-    currentAudio.play();
-    currentSongTitle = title;
-    $("#current-song").text(title.replace(/\.mp3$/i, ""));
-    progressBar.val(0);
-    $("#play-pause-btn").text("⏸️ Pause");
-    currentAudio.addEventListener("timeupdate", () => {
-      progressBar.attr("max", currentAudio.duration);
-      progressBar.val(currentAudio.currentTime);
     });
-    $.post("/play_song", JSON.stringify({ filename: title, is_public: isPublic }), null, "json");
+  }
+
+  function playSong(src, title, isPublic) {
+  if (currentAudio) {
+    currentAudio.pause();
+    if (currentSongTitle === title) {
+      currentSongTitle = "";
+      $("#play-pause-btn").text("▶️ Play");
+      return;
+    }
+  }
+
+  currentAudio = new Audio(src);
+  currentAudio.volume = $("#volume-slider").val() / 100;
+  currentAudio.loop = false;
+  currentAudio.play();
+  currentSongTitle = title;
+  $("#current-song").text(title.replace(/\.mp3$/i, ""));
+  progressBar.val(0);
+  $("#play-pause-btn").text("⏸️ Pause");
+
+  currentAudio.addEventListener("timeupdate", () => {
+    progressBar.attr("max", currentAudio.duration);
+    progressBar.val(currentAudio.currentTime);
+  });
+
+  currentAudio.addEventListener("ended", () => {
+    playNextSong();
+  });
+
+  // ⬇️ Naudojame fetch su credentials
+  fetch("/play_song", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ filename: title, is_public: isPublic }),
+    credentials: "include" // 🔥 labai svarbu!
+  })
+    .then(response => response.json())
+    .then(() => setTimeout(fetchHistory, 300))
+    .catch(err => console.error("Failed to log play:", err));
+
+
+  }
+
+  function playNextSong() {
+    const allButtons = $(".play-button");
+    let found = false;
+
+    allButtons.each(function () {
+      const thisTitle = $(this).data("title");
+      if (found) {
+        $(this).click(); // play the next one
+        return false;
+      }
+      if (thisTitle === currentSongTitle) {
+        found = true;
+      }
+    });
+
+    if (!found || allButtons.length === 1) {
+      currentSongTitle = "";
+      $("#current-song").text("No more songs");
+      $("#play-pause-btn").text("▶️ Play");
+    }
   }
 
   function makeDraggable(li, filename, isPublic) {
@@ -141,11 +200,32 @@ $(document).ready(function () {
       const list = $("#popup-song-list").empty();
       playlist.songs.forEach((s, i) => {
         const name = s.replace(/\.mp3$/, "");
-        list.append(`<li>${i + 1}. ${name} <button onclick='playSongFromPlaylist("${s}")'>▶️</button></li>`);
+        list.append(`
+          <li>
+            ${i + 1}. ${name}
+            <button onclick='playSongFromPlaylist("${s}.mp3")'>▶️</button>
+            <button onclick='removeSongFromPlaylist("${s}")'>➖</button>
+          </li>
+        `);
       });
       $("#playlist-popup").fadeIn();
     });
   }
+
+  window.removeSongFromPlaylist = function (filename) {
+    $.ajax({
+      url: "/playlist/remove_song",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({
+        playlist: currentPlaylistName,
+        song: filename,
+        is_public: filename.includes("🌐")
+      }),
+      success: () => showPlaylistPopup(currentPlaylistName),
+      error: (xhr) => alert(xhr.responseJSON?.message || "Failed to remove song from playlist")
+    });
+  };
 
   $("#popup-description").on("focus", function () {
     if ($(this).text().trim() === "add description") {
@@ -245,6 +325,13 @@ $(document).ready(function () {
     });
   });
 
+  $(document).on("input", "#public-search", function () {
+    const f = $(this).val().toLowerCase();
+    $("#public-song-list li").each(function () {
+      $(this).toggle($(this).text().toLowerCase().includes(f));
+    });
+  });
+
   $("#play-pause-btn").click(function () {
     if (currentAudio) {
       if (currentAudio.paused) {
@@ -276,7 +363,11 @@ $(document).ready(function () {
 
   window.fetchHistory = function () {
     $.get("/history", function (data) {
-      $("#history-output").html(data.history[0]);
+      if (data && data.history && data.history.length > 0) {
+        $("#history-output").html(data.history[0]);
+      } else {
+        $("#history-output").html("<i>No history found.</i>");
+      }
     });
   };
 
