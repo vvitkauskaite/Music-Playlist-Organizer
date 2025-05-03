@@ -1,18 +1,42 @@
-# Ignore uploaded songs and changing files
+# === BACKEND ===
 backend/Downloaded_Songs/
 backend/Recently_Played.txt
+backend/__pycache__/
+backend/*.pyc
+backend/*.db
+backend/.env
 
-# Ignore default static images
-static/default_picture.png
-static/default_profile.png
+# === FRONTEND ===
+frontend/static/*.mp3
+frontend/static/*.wav
+frontend/static/__pycache__/
+frontend/static/*.log
+frontend/static/*.zip
+frontend/static/.DS_Store
 
-# Ignore virtual environment and temp files
+# === DEFAULT STATIC IMAGES ===
+frontend/static/default_picture.png
+frontend/static/default_profile.png
+
+# === VENV ===
 venv/
+.env
+
+# === SYSTEM FILES ===
+.DS_Store
+Thumbs.db
+
+# === GENERAL PYTHON ===
 __pycache__/
 *.pyc
-.DS_Store
-*.db
-*.mp3
+*.pyo
+*.pyd
 
-# Optional secrets
-.env
+# === AUDIO FILES (global catch) ===
+*.mp3
+*.wav
+
+# === IDE / TOOL FILES ===
+.vscode/
+.idea/
+*.log
