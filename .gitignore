@@ -1,11 +1,18 @@
-# Ignore user-uploaded MP3 files in the DownloadedSongs directory
-DownloadedSongs/
+# Ignore uploaded songs and changing files
+backend/Downloaded_Songs/
+backend/Recently_Played.txt
 
-# Ignore Recently_Played.txt file (because it will keep changing)
-recentlyPlayed.txt
+# Ignore default static images
+static/default_picture.png
+static/default_profile.png
 
-# Ignore default photo file
-defaultphoto.png
+# Ignore virtual environment and temp files
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.db
+*.mp3
 
-# Ignore default profile file 
-default_profile.png
+# Optional secrets
+.env
