@@ -64,7 +64,7 @@ Naudotojas gali įkelti savo .mp3 failus į „Local Songs“ biblioteką spuste
 
 4. **Grojaraščių kūrimas ir valdymas**  
 - Spustelėjęs „Create Playlist“, naudotojas gali sukurti naują grojaraštį.
-- Spustelėjus grojaraštį, jis atsidaro kaip mažas „popup“ langas.
+- Spustelėjus grojaraštį, jis atsidaro kaip mažas „pop-up“ langas.
 - Ten galima pervardinti grojaraštį, pridėti aprašymą ir nuotrauką.
 
 5. **Dainų paieška**  
@@ -89,7 +89,7 @@ Sistema turi įtaisytą muzikos grotuvą, leidžiantį klausyti bet kurią pasir
 
 #### Encapsulation
 
-Programa naudoja klases su privačiais laukais ir viešais metodais, kad paslėptų vidinę logiką ir apsaugotų duomenis. Klasė User naudoja privačius laukus su dviem pabraukimais (__) ir @property metodą, kad apsaugotų duomenis ir leistų prieigą tik per viešą metodą.
+Programa naudoja klases su privačiais laukais ir viešais metodais, kad paslėptų vidinę logiką ir apsaugotų duomenis. Klasė `User` naudoja privačius laukus su dviem pabraukimais (__) ir `@property` metodą, kad apsaugotų duomenis ir leistų prieigą tik per viešą metodą.
 
 ```python
 class User:
@@ -106,7 +106,7 @@ class User:
 
 #### Inheritance
 
-Tam tikros klasės paveldi savybes iš bendresnių klasių. Klasė PublicLibrary paveldi Library klasę ir perima jos metodus bei savybes.
+Tam tikros klasės paveldi savybes iš bendresnių klasių. Klasė `PublicLibrary` paveldi `Library` klasę ir perima jos metodus bei savybes.
 
 ```python
 class Library:
@@ -122,7 +122,7 @@ class PublicLibrary(Library):
 
 #### Abstraction
 
-Pagrindiniai programos komponentai (pvz., daina, grojaraštis) yra atvaizduoti kaip klasės, paslepiant jų vidinę logiką. Song yra abstrakti bazinė klasė, kuri apibrėžia bendras dainos savybes, bet play() metodas paliekamas įgyvendinti paveldinčioms klasėms.
+Pagrindiniai programos komponentai (pvz., daina, grojaraštis) yra atvaizduoti kaip klasės, paslepiant jų vidinę logiką. `Song` yra abstrakti bazinė klasė, kuri apibrėžia bendras dainos savybes, bet `play()` metodas paliekamas įgyvendinti paveldinčioms klasėms.
 
 ```python
 from abc import ABC, abstractmethod
@@ -141,7 +141,7 @@ class Song(ABC):
 
 #### Polymorphism
 
-Įvairūs objektai gali naudoti tą patį metodą skirtingai. Abi klasės PublicSong ir LocalSong paveldi Song ir įgyvendina tą patį metodą play() skirtingai – tai polimorfizmas.
+Įvairūs objektai gali naudoti tą patį metodą skirtingai. Abi klasės `PublicSong` ir `LocalSong` paveldi Song ir įgyvendina tą patį metodą `play()` skirtingai – tai polimorfizmas.
 
 ```python
 class PublicSong(Song):
@@ -184,7 +184,7 @@ class User:
         self.private_library = ...
         self.playlists = [...]
 ```
-**Agregacija**: Grojaraščiai turi dainas, bet tos dainos (ypač viešos – PublicSong) egzistuoja nepriklausomai - jos saugomos atskirame aplanke, į playlistus tik pridėtos, bet jų neištrinsi su playlistu. Todėl čia agregacija: playlistas naudoja dainas, bet jų nekontroliuoja ir nesunaikina.
+**Agregacija**: Grojaraščiai turi dainas, bet tos dainos (ypač viešos – `PublicSong`) egzistuoja nepriklausomai - jos saugomos atskirame aplanke, į grojarščius tik pridėtos, bet jų neištrinsi su grojaraščiu. Todėl čia agregacija: playlistas naudoja dainas, bet jų nekontroliuoja ir nesunaikina.
 
 ```python
 class Playlist:
@@ -195,7 +195,7 @@ class Playlist:
 
 #### Reading from file & writing to file
 
-HistoryLogger klasė rašo informaciją apie paleistas dainas į failą Recently_Played.txt ir iš jo skaito. Tai leidžia naudotojui matyti savo klausytų dainų istoriją.
+`HistoryLogger` klasė rašo informaciją apie paleistas dainas į failą `Recently_Played.txt` ir iš jo skaito. Tai leidžia naudotojui matyti savo klausytų dainų istoriją.
 
 ```python
 class HistoryLogger:
