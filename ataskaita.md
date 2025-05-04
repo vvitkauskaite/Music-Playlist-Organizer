@@ -4,8 +4,7 @@ Language: Lithuanian
 -->
 
 # TuneTide: Muzikos grojaraščių organizatorius
-
-**Kursinio darbo ataskaita**  
+ 
 Autorius: Vaiva Vitkauskaitė  
 Grupė: EDIf-24/2  
 Vilnius Tech, 2025 
@@ -52,29 +51,29 @@ Norint naudotis sistema, reikia prisiregistruoti įvedant vartotojo vardą, el. 
 
 2. **Pagrindinis valdymo langas (Dashboard)**  
 Prisijungus, vartotojas mato valdymo langą, kuriame pateikiamos šios sekcijos:
-- **Local Songs** – vartotojo įkelti muzikos failai (.mp3).
-- **Public Songs** – iš anksto įkelta bendroji muzikos kolekcija.
-- **Playlists** – vartotojo sukurti grojaraščiai.
+        - **Local Songs** – vartotojo įkelti muzikos failai (.mp3).
+        - **Public Songs** – iš anksto įkelta bendroji muzikos kolekcija.
+        - **Playlists** – vartotojo sukurti grojaraščiai.
  
 3. **Muzikos įkėlimas**  
 Naudotojas gali įkelti savo .mp3 failus į „Local Songs“ biblioteką spustelėjęs „Upload“ mygtuką.
 
 4. **Grojaraščių kūrimas ir valdymas**  
-- Spustelėjęs „Create Playlist“, naudotojas gali sukurti naują grojaraštį.
-- Spustelėjus grojaraštį, jis atsidaro kaip mažas „popup“ langas.
-- Ten galima pervardinti grojaraštį, pridėti aprašymą ir nuotrauką.
+        - Spustelėjęs „Create Playlist“, naudotojas gali sukurti naują grojaraštį.
+        - Spustelėjus grojaraštį, jis atsidaro kaip mažas „popup“ langas.
+        - Ten galima pervardinti grojaraštį, pridėti aprašymą ir nuotrauką.
 
 5. **Dainų paieška**  
 Yra du atskiri paieškos laukeliai:
-- Vienas ieško tik tarp įkeltų (local) dainų.
-- Kitas – tarp „Public Songs“ kolekcijos.
+        - Vienas ieško tik tarp įkeltų (local) dainų.
+        - Kitas – tarp „Public Songs“ kolekcijos.
 
 6. **Grojimas**  
 Sistema turi įtaisytą muzikos grotuvą, leidžiantį klausyti bet kurią pasirinktą dainą. Rodo pavadinimą, laiko slankiklį, garso lygį.
 
 7. **Papildomos funkcijos**  
-- Animacinės bangelės dekoratyviai puošia svetainę pagal temą.
-- Grojaraščiai numeruoja dainas ir leidžia leisti kiekvieną atskirai.
+        - Animacinės bangelės dekoratyviai puošia svetainę pagal temą.
+        - Grojaraščiai numeruoja dainas ir leidžia leisti kiekvieną atskirai.
 
 ---
 
