@@ -10,10 +10,12 @@ Grupė: EDIf-24/2
 Vilnius Tech, 2025 
 
 
+
 # Kursinio darbo ataskaita
 
 
 ## Įvadas (Introduction)
+
 
 ### Kas tai per programa?
 
@@ -22,6 +24,7 @@ Vilnius Tech, 2025
 Sistema palaiko dvi dainų kategorijas – vartotojo įkeltą (lokalią) muziką ir viešą (public) muzikos kolekciją. Vartotojai gali pervardinti grojaraščius, pridėti aprašymus ir nuotraukas, ieškoti dainų pagal pavadinimą.
 
 Aplikacija sukurta naudojant Python (su Flask), HTML, CSS ir JavaScript, o backend’e taikomi python OOP principai, dizaino šablonai, failų skaitymas/rašymas ir testavimas.
+
 
 ### Kaip paleisti programą?
 
@@ -42,6 +45,7 @@ Aplikacija sukurta naudojant Python (su Flask), HTML, CSS ir JavaScript, o backe
 >
 > Ten galėsite registruotis, įkelti dainas, kurti grojaraščius ir naudotis visa sistema.
 
+
 ### Kaip naudotis programa?
 
 Atidarius „TuneTide“ naršyklėje, naudotojas mato pradinį registracijos arba prisijungimo langą.
@@ -51,9 +55,9 @@ Norint naudotis sistema, reikia prisiregistruoti įvedant vartotojo vardą, el. 
 
 2. **Pagrindinis valdymo langas (Dashboard)**  
 Prisijungus, vartotojas mato valdymo langą, kuriame pateikiamos šios sekcijos:
->- **Local Songs** – vartotojo įkelti muzikos failai (.mp3).
->- **Public Songs** – iš anksto įkelta bendroji muzikos kolekcija.
->- **Playlists** – vartotojo sukurti grojaraščiai.
+- **Local Songs** – vartotojo įkelti muzikos failai (.mp3).
+- **Public Songs** – iš anksto įkelta bendroji muzikos kolekcija.
+- **Playlists** – vartotojo sukurti grojaraščiai.
  
 3. **Muzikos įkėlimas**  
 Naudotojas gali įkelti savo .mp3 failus į „Local Songs“ biblioteką spustelėjęs „Upload“ mygtuką.
@@ -75,7 +79,9 @@ Sistema turi įtaisytą muzikos grotuvą, leidžiantį klausyti bet kurią pasir
         - Animacinės bangelės dekoratyviai puošia svetainę pagal temą.
         - Grojaraščiai numeruoja dainas ir leidžia leisti kiekvieną atskirai.
 
+
 ---
+
 
 ## Analizė/Programos paaiškinimas (Body/Analysis)
 
@@ -96,6 +102,7 @@ class User:
         return self.__u_name
 ```
 
+
 #### Inheritance
 Tam tikros klasės paveldi savybes iš bendresnių klasių. Klasė PublicLibrary paveldi Library klasę ir perima jos metodus bei savybes.
 
@@ -109,6 +116,7 @@ class PublicLibrary(Library):
     def load_public_songs(self):
         pass
 ```
+
 
 #### Abstraction
 Pagrindiniai programos komponentai (pvz., daina, grojaraštis) yra atvaizduoti kaip klasės, paslepiant jų vidinę logiką. Song yra abstrakti bazinė klasė, kuri apibrėžia bendras dainos savybes, bet play() metodas paliekamas įgyvendinti paveldinčioms klasėms.
@@ -127,6 +135,7 @@ class Song(ABC):
         pass
 ```
 
+
 #### Polymorphism
 Įvairūs objektai gali naudoti tą patį metodą skirtingai. Abi klasės PublicSong ir LocalSong paveldi Song ir įgyvendina tą patį metodą play() skirtingai – tai polimorfizmas.
 
@@ -140,6 +149,7 @@ class LocalSong(Song):
         print(f"Playing local song: {self.s_name}")
 
 ```
+
 
 #### Singleton
 TuneTide naudoja Singleton dizaino šabloną valdyti muzikos grotuvui – kad egzistuotų tik vienas grotuvo objektas visos programos metu:
@@ -158,6 +168,7 @@ class MusicPlayer(metaclass=SingletonMP):
         self.is_playing = True
 ```
 
+
 #### Composition and aggregation
 **Kompozicija**: Vartotojas "turi" savo biblioteką ir grojaraščius, ir kai jis pašalinamas, visi tie objektai ištrinami kartu. Tai – kompozicija, nes objektai neegzistuoja be vartotojo.
 
@@ -174,6 +185,7 @@ class Playlist:
     def __init__(self):
         self.songs = [...]
 ```
+
 
 #### Reading from file & writing to file
 HistoryLogger klasė rašo informaciją apie paleistas dainas į failą Recently_Played.txt ir iš jo skaito. Tai leidžia naudotojui matyti savo klausytų dainų istoriją.
@@ -206,11 +218,13 @@ class HistoryLogger:
 - Įdiegta dviguba paieškos sistema: atskirai local ir public dainų paieškai.
 - Sukurtas estetiškas vartotojo sąsajos dizainas su animuotomis bangelėmis, atitinkančiomis „TuneTide“ tematiką.
 
+
 ### Kokie iššūkiai iškilo?
 
 - Iškilo problemų su sesijų tvarkymu, ypač registracijos kontekste.
 - Failų įkėlimas reikalavo papildomo dėmesio dėl leidžiamų formatų, saugumo (`secure_filename`) ir įrašymo kelių.
 - Sudėtingiau buvo įgyvendinti grojaraščių popup langų dizainą, kad jie nepažeistų kitų svetainės elementų.
+
 
 ### Kokios funkcijos veikia?
 
@@ -221,12 +235,14 @@ class HistoryLogger:
 - Paieška tarp skirtingų dainų bibliotekų.
 - Muzikos grotuvas su dainos informacija, trukme, garsumu.
 
+
 ### Kokie buvo naudotojo testai (jei buvo)?
 
 - Atliekant testavimą, vartotojai sėkmingai sukūrė grojaraštį, įkėlė dainą ir perklausė ją per grotuvo sąsają.
 - Testuota, ar dainos perkeliamos į grojaraštį ir ar jos ten lieka net perkrovus puslapį.
 - Patikrintas istorijos failas – ar daina tinkamai įrašoma po perklausos.
 - Išbandytas registracijos mechanizmas: neteisingas el. paštas, užimtas vartotojo vardas ir sėkminga registracija.
+
 
 ### Ką galima būtų patobulinti ar pridėti ateityje?
 
@@ -236,6 +252,7 @@ class HistoryLogger:
 - Įdiegti prisijungimo patvirtinimą el. paštu ir slaptažodžio keitimą.
 
 ---
+
 
 ## Apibendrinimas (Conclusion)
 
