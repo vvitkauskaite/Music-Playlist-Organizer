@@ -88,6 +88,7 @@ Sistema turi įtaisytą muzikos grotuvą, leidžiantį klausyti bet kurią pasir
 ### Objektinio programavimo principai (OOP)
 
 #### Encapsulation
+
 Programa naudoja klases su privačiais laukais ir viešais metodais, kad paslėptų vidinę logiką ir apsaugotų duomenis. Klasė User naudoja privačius laukus su dviem pabraukimais (__) ir @property metodą, kad apsaugotų duomenis ir leistų prieigą tik per viešą metodą.
 
 ```python
@@ -104,6 +105,7 @@ class User:
 
 
 #### Inheritance
+
 Tam tikros klasės paveldi savybes iš bendresnių klasių. Klasė PublicLibrary paveldi Library klasę ir perima jos metodus bei savybes.
 
 ```python
@@ -119,6 +121,7 @@ class PublicLibrary(Library):
 
 
 #### Abstraction
+
 Pagrindiniai programos komponentai (pvz., daina, grojaraštis) yra atvaizduoti kaip klasės, paslepiant jų vidinę logiką. Song yra abstrakti bazinė klasė, kuri apibrėžia bendras dainos savybes, bet play() metodas paliekamas įgyvendinti paveldinčioms klasėms.
 
 ```python
@@ -137,6 +140,7 @@ class Song(ABC):
 
 
 #### Polymorphism
+
 Įvairūs objektai gali naudoti tą patį metodą skirtingai. Abi klasės PublicSong ir LocalSong paveldi Song ir įgyvendina tą patį metodą play() skirtingai – tai polimorfizmas.
 
 ```python
@@ -152,6 +156,7 @@ class LocalSong(Song):
 
 
 #### Singleton
+
 TuneTide naudoja Singleton dizaino šabloną valdyti muzikos grotuvui – kad egzistuotų tik vienas grotuvo objektas visos programos metu:
 
 ```python
@@ -170,6 +175,7 @@ class MusicPlayer(metaclass=SingletonMP):
 
 
 #### Composition and aggregation
+
 **Kompozicija**: Vartotojas "turi" savo biblioteką ir grojaraščius, ir kai jis pašalinamas, visi tie objektai ištrinami kartu. Tai – kompozicija, nes objektai neegzistuoja be vartotojo.
 
 ```python
@@ -188,6 +194,7 @@ class Playlist:
 
 
 #### Reading from file & writing to file
+
 HistoryLogger klasė rašo informaciją apie paleistas dainas į failą Recently_Played.txt ir iš jo skaito. Tai leidžia naudotojui matyti savo klausytų dainų istoriją.
 
 ```python
@@ -204,6 +211,25 @@ class HistoryLogger:
                 return file.readlines()
         except FileNotFoundError:
             return ["No history found."]
+```
+
+#### Testavimas (Testing)
+
+Programa testuojama naudojant Python `unittest` biblioteką. Sukurtas testavimo failas `tests.py` apima šiuos aspektus:
+
+- **Playlist testai**: tikrinama, ar galima pridėti ir pašalinti dainą iš grojaraščio.
+- **User testai**: tikrinama, ar vartotojas sukuriamas teisingai su biblioteka ir grojaraščiais.
+- **Song klasės testai**: patikrinama paveldėtų klasių `PublicSong` ir `LocalSong` elgsena.
+- **HistoryLogger**: tikrinama, ar daina įrašoma į istorijos failą.
+- **Singleton**: patvirtinama, kad `MusicPlayer` visada grąžina tą patį objektą (Singleton šablonas).
+
+```python
+class TestPlaylist(unittest.TestCase):
+    def test_add_song(self):
+        playlist = Playlist("Test Playlist")
+        song = LocalSong("Song 1", "Artist 1", 3.0)
+        playlist.add_song(song)
+        self.assertEqual(len(playlist.songs), 1)
 ```
 
 ---
